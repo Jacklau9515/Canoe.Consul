@@ -5,32 +5,32 @@ using System.Text;
 namespace Canoe.Configuration.Consul
 {
     /// <summary>
-    /// Consul 注册发现相关参数
+    /// Consul Options
     /// </summary>
     public class ConsulOption
     {
         /// <summary>
-        /// 服务名称
+        /// Service Name
         /// </summary>
         public string ServiceName { get; set; }
 
         /// <summary>
-        /// 服务IP
+        /// Service IP
         /// </summary>
         public string ServiceIP { get; set; }
 
         /// <summary>
-        /// 服务端口
+        /// Service Port
         /// </summary>
         public int ServicePort { get; set; }
 
         /// <summary>
-        /// 服务健康检查地址
+        /// Service HealthCheck Address
         /// </summary>
         public string ServiceHealthCheck { get; set; }
 
         /// <summary>
-        /// Consul 地址
+        /// Consul Address
         /// </summary>
         public string Address { get; set; }
     }

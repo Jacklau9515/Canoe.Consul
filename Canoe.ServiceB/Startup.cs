@@ -36,6 +36,7 @@ namespace Canoe.ServiceB
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.AspNetCore.Hosting.IApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
@@ -50,7 +51,7 @@ namespace Canoe.ServiceB
             app.UseRouting();
 
             app.UseAuthorization();
-            #region 引入Consul中间件
+            #region Introduce Middleware
             var consulOption = new ConsulOption
             {
                 ServiceName = Configuration["ServiceName"],

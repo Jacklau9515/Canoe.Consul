@@ -44,7 +44,7 @@ namespace Canoe.GateWay
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //添加网关中间件
+            // Add Middleware for Gateway
             app.UseOcelot();
 
             if (env.IsDevelopment())
