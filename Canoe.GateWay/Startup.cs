@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
+using Ocelot.Provider.Polly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,10 +36,17 @@ namespace Canoe.GateWay
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Canoe.GateWay", Version = "v1" });
             });
-            //Ocelot和Consul的注入
-            services.AddOcelot(new ConfigurationBuilder()
-              .AddJsonFile("ocelot.json")
-              .Build()).AddConsul();
+            services.AddCors(options =>
+            {
+                //this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:8088")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+            services.AddOcelot(Configuration).AddConsul().AddPolly();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

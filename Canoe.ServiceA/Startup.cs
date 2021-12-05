@@ -52,6 +52,7 @@ namespace Canoe.ServiceA
 
             app.UseAuthorization();
             #region Introduce Middleware
+            var consulSection = Configuration.GetSection("Consul"); // Get the config section of Consul
             var consulOption = new ConsulOption
             {
                 ServiceName = Configuration["ServiceName"],
@@ -60,7 +61,7 @@ namespace Canoe.ServiceA
                 ServiceHealthCheck = Configuration["ServiceHealthCheck"],
                 Address = Configuration["ConsulAddress"]
             };
-            _ = app.RegisterConsul(lifetime, consulOption);
+            app.RegisterConsul(lifetime, consulOption);
             #endregion
             app.UseEndpoints(endpoints =>
             {

@@ -1,36 +1,46 @@
 ﻿{
-  "ReRoutes": [ // Route Info
+  "Routes": [
     {
-      "UseServiceDiscovery": true,
-      "DownstreamPathTemplate": "/{url}", 
-      "DownstreamScheme": "http",
-      "ServiceName": "ServiceA", 
+      "ServiceName": "UserService", // Service Name of corresponding service
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/user/{path}",
+      "UpstreamPathTemplate": "/user/{path}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "LoadBalancerOptions": {
-
-        "Type": "LeastConnection"
+        "Type": "RoundRobin"   
       },
-      "UpstreamPathTemplate": "/ServiceA/{url}", 
-      "UpstreamHttpMethod": [ "Get" ] 
-    },
-    {
       "UseServiceDiscovery": true,
-      "DownstreamPathTemplate": "/{url}", 
-      "DownstreamScheme": "http",
-      "ServiceName": "ServiceB",
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
+      "RateLimitOptions": {
+        "ClientWhitelist": [ "admin" ],
+        "EnableRateLimiting": true,
+        "Period": "1s", // Period：1s, 5m, 1h, 1d
+        "PeriodTimespan": 15, // Re-try in Client after 15 seconds
+        "Limit": 2 // The maximum requests
       },
-      "UpstreamPathTemplate": "/ServiceB/{url}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 2, 
+        "DurationOfBreak": 15000, 
+        "TimeoutValue": 5000 
+      },
+      "FileCacheOptions": { // cache response data - ttl: 10s  
+        "TtlSeconds": 10,
+        "Region": ""
+      }
     }
   ],
-  //  
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:44355/", // Gateway Address
+    "BaseUrl": "https://localhost:44335",
+    "ReRouteIsCaseSensitive": false,
     "ServiceDiscoveryProvider": {
-      "Host": "localhost", // Request Domain
-      "Port": 8500, 
-      "Type": "Consul" 
+      "Host": "localhost",
+      "Port": 8500,
+      "Type": "Consul"
+    },
+    "RateLimitOptions": {
+      "DisableRateLimitHeaders": false,
+      "QuotaExceededMessage": "Too many requests, are you OK?",
+      "HttpStatusCode": 999, 
+      "ClientIdHeader": "client_id"
     }
   }
 }
