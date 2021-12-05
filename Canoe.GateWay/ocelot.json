@@ -1,0 +1,36 @@
+﻿{
+  "ReRoutes": [ //配置路由信息
+    {
+      "UseServiceDiscovery": true,
+      "DownstreamPathTemplate": "/{url}", //指定了下游的url及使用的通信协议，{url}是通配的意思
+      "DownstreamScheme": "http", //下游服务http schema
+      "ServiceName": "ServiceA", //服务名
+      "LoadBalancerOptions": {
+
+        "Type": "LeastConnection"
+      },
+      "UpstreamPathTemplate": "/ServiceA/{url}", //上游也就是用户输入的请求Url模板
+      "UpstreamHttpMethod": [ "Get" ] //上游请求http方法，可使用数组
+    },
+    {
+      "UseServiceDiscovery": true,
+      "DownstreamPathTemplate": "/{url}", //指定了下游的url及使用的通信协议，{url}是通配的意思
+      "DownstreamScheme": "http",
+      "ServiceName": "ServiceB",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "UpstreamPathTemplate": "/ServiceB/{url}",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ],
+  //网关配置
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:44355/", //网关地址
+    "ServiceDiscoveryProvider": {
+      "Host": "localhost", //请求域名
+      "Port": 8500, //端口
+      "Type": "Consul" //类型
+    }
+  }
+}
